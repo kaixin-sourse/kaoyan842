@@ -8,7 +8,7 @@ typedef struct BiThrNode
 {
     char data;
     struct BiThrNode *lchild;
-    int lTag; //标记左儿子是否是前驱， 1为前驱，2为真正的左儿子
+    int lTag; //标记左儿子是否是前驱， 1为前驱，0为真正的左儿子
     struct BiThrNode *rchild;
     int rTag; //跟上面同理
 } BiThrNode, *BiThrTree;
@@ -29,8 +29,10 @@ void preOrderThreading(BiThrNode *pNode)
         {                                               //如果是空，就应该把pre的右指针域更新为当前节点p，完成线索化
             preNode->rchild = pNode;
             preNode->rTag = 1;
+            // cout << preNode->data << "***" << endl;
         }
-        preNode = pNode;      //转移pre到当前节点
+        preNode = pNode; //转移pre到当前节点
+
         if (pNode->lTag == 0) //看是否有左子树，继续递归
         {
             preOrderThreading(pNode->lchild);
@@ -39,18 +41,88 @@ void preOrderThreading(BiThrNode *pNode)
         {
             preOrderThreading(pNode->rchild);
         }
+        // cout << pNode->data << " " << pNode->lTag << " " << pNode->rTag << " " << endl; // pNode->lchild->data << " " << pNode->rchild->data << endl;
         //回溯
     }
 }
-//创建一棵线序二叉树
-void createBiThrTree(BiThrTree Thrt)
+// 创建一棵线序二叉树
+/*
+     A
+     / \
+    B   C
+   / \   \
+  D   E   F
+*/
+BiThrNode *createBiThrTree()
 {
-    preOrderThreading(Thrt);
+    BiThrNode *A = (BiThrNode *)malloc(sizeof(BiThrNode));
+    A->data = 'A';
+    A->lTag = 0;
+    A->rTag = 0;
+    A->lchild = NULL;
+    A->rchild = NULL;
+
+    BiThrNode *B = (BiThrNode *)malloc(sizeof(BiThrNode));
+    B->data = 'B';
+    B->lTag = 0;
+    B->rTag = 0;
+    B->lchild = NULL;
+    B->rchild = NULL;
+
+    BiThrNode *C = (BiThrNode *)malloc(sizeof(BiThrNode));
+    C->data = 'C';
+    C->lTag = 0;
+    C->rTag = 0;
+    C->lchild = NULL;
+    C->rchild = NULL;
+    BiThrNode *D = (BiThrNode *)malloc(sizeof(BiThrNode));
+    D->data = 'D';
+    D->lTag = 0;
+    D->rTag = 0;
+    D->lchild = NULL;
+    D->rchild = NULL;
+    BiThrNode *E = (BiThrNode *)malloc(sizeof(BiThrNode));
+    E->data = 'E';
+    E->lTag = 0;
+    E->rTag = 0;
+    E->lchild = NULL;
+    E->rchild = NULL;
+    BiThrNode *F = (BiThrNode *)malloc(sizeof(BiThrNode));
+    F->data = 'F';
+    F->lTag = 0;
+    F->rTag = 0;
+    F->lchild = NULL;
+    F->rchild = NULL;
+
+    A->lchild = B;
+    A->rchild = C;
+    B->lchild = D;
+    B->rchild = E;
+    C->rchild = F;
+
+    return A; // 返回根节点
+}
+
+void check(BiThrNode *root)
+{
+    if (root)
+    {
+        cout << root->data << " " << root->lTag << " " << root->rTag << endl;
+        if (root->lTag == 0)
+        {
+            check(root->lchild);
+        }
+        if (root->rTag == 0)
+        {
+            check(root->rchild);
+        }
+    }
 }
 void solve()
 {
-    BiThrNode *root = (BiThrNode *)malloc(sizeof(BiThrNode));
-    createBiThrTree(root);
+    BiThrNode *root = createBiThrTree();
+    preOrderThreading(root);
+    check(root);//检查是否正确(lTag,rTag);
 }
 
 int main()
