@@ -118,11 +118,33 @@ void check(BiThrNode *root)
         }
     }
 }
+
+//遍历先序线索二叉树
+void preOrderTravers(BiThrTree Thrt)
+{
+    BiThrNode *preNode = Thrt;
+    BiThrNode *pSuccessor = NULL;
+    while (preNode != NULL)
+    {
+        if (preNode->lTag == 0) //按照先序遍历二叉树，先看根节点、左子树根节点、右子树根节点
+        {                       //如果左子树不是前驱的话，那么是当前节点的“真儿子”，那么更新后继节点到左儿子节点
+            pSuccessor = preNode->lchild;
+        }
+        else
+        {                                 // 当没有左儿子时，那么右儿子有两种情况，一种是真的右儿子，另一种是先序遍历的后继节点，
+            pSuccessor = preNode->rchild; //不过这两种情况对于先序遍历二叉树来说结果是一样的
+        }
+        cout << preNode->data << " ";
+        preNode = pSuccessor; //更新当前节点到后继节点
+    }
+}
+
 void solve()
 {
     BiThrNode *root = createBiThrTree();
     preOrderThreading(root);
-    check(root);//检查是否正确(lTag,rTag);
+    // check(root);//检验二叉树是否先序线索化成功
+    preOrderTravers(root); //先序遍历二叉树
 }
 
 int main()
